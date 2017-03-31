@@ -1,0 +1,6 @@
+*.md
+vendor/bundle
+public/assets
+.git
+.gitignore
+.dockerignore
