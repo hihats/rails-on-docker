@@ -93,6 +93,14 @@ $DOCKER_HOSTの値を、ローカルの`/etc/hosts`に追記
 
 `dev.myrailsapp.jp` ブラウザアクセスしてRailsの確認
 
+## Gemfileに変更があった場合
+変更をローカルにマージ後
+
+```
+$ docker-composer build
+```
+buildし直すことで、DockerfileのAddがGemfile&Gemfile.lockのキャッシュから更新があったときのみ検知してbundle install が走る
+
 
 ## 既存問題点
 

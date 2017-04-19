@@ -3,8 +3,7 @@ db:
   restart: always
   volumes:
     - ./containers/db/my.cnf:/etc/mysql/conf.d/my.cnf
-    - ./containers/db/entrypoint.sh:/docker-entrypoint-initdb.d
-    - ./containers/db/initial.sql:/var/tmp/initial.sql
+    - ./containers/db/initial.sql:/docker-entrypoint-initdb.d/initial.sql
   environment:
     MYSQL_ROOT_PASSWORD: pass
   container_name: db
