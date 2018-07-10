@@ -29,7 +29,7 @@ group :development, :test do
   gem 'faker'
   gem 'pry'
   gem 'database_cleaner'
-  gem 'rubocop', '~> 0.35.0', require: false
+  gem 'rubocop', '~> 0.49.0', require: false
   gem 'rubocop-checkstyle_formatter', require: false
   gem 'timecop'
   gem 'binding_of_caller'
@@ -73,7 +73,7 @@ gem 'sinatra', github: 'sinatra'
 gem 'figaro'
 gem 'slim'
 gem 'ransack'
-gem 'nokogiri', '~> 1.6.8'
+gem 'nokogiri' '~> 1.8.2',
 gem 'bootstrap-sass', '~> 3.3.5'
 gem 'bootstrap-datepicker-rails'
 gem 'momentjs-rails', '>= 2.9.0'
