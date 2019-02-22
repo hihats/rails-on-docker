@@ -1,21 +1,17 @@
-FROM ruby:2.3.1
+FROM ruby:2.5.1
 ENV LANG C.UTF-8
+ENV TZ=Asia/Tokyo
 
 RUN /bin/cp -f /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
-RUN curl -sL https://deb.nodesource.com/setup_7.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
     && apt-get update -qq \
-    && apt-get install -y build-essential libmysql++-dev nodejs git \
-    && npm install -g gulp-cli bower eslint babel-eslint
+    && apt-get install -y build-essential nodejs libmysql++-dev git
 
-ENV APP_HOME /var/www/html
+ENV APP_HOME /var/src/app
 RUN mkdir -p $APP_HOME
 WORKDIR $APP_HOME
 ADD Gemfile $APP_HOME/Gemfile
 ADD Gemfile.lock $APP_HOME/Gemfile.lock
 
 ENV BUNDLE_DISABLE_SHARED_GEMS 1
-RUN cd $APP_HOME \
-  && bundle install
-
-ADD . $APP_HOME
-CMD ["bundle", "exec", "rails", "db:migrate"]
+RUN bundle install -j4

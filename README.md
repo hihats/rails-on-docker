@@ -7,91 +7,55 @@
 
 ## Installation
 
-**Docker for Mac は未動作確認かつ動作が遅いという伝聞のため割愛**
-
-
-[Docker Toolbox](https://www.docker.com/products/docker-toolbox)
+[Docker for Mac, Docker for Windows](https://www.docker.com/products/docker-desktop)
 
 dockerコマンド、docker-machineコマンド、docker-composeコマンド全部入り
 
-Macであれば
+In case of Mac, You can also use Homebrew
 ```bash
-$ brew cask install dockertoolbox
+$ brew install docker
+$ brew cask install docker
 ```
-でも可
 
 ## Initial Setting
 
-### Gemfile確認
-必要なものを記載します。（リポジトリ上のGemfileは適当なサンプル）
-
-### Launch Docker Host OS
-docker-machineコマンドを使用
+### Launch Docker Host OS（docker-machineをつかう場合だけ必要）
 ```bash
 $ docker-machine create --driver virtualbox myrailsapp
 $ docker-machine start myrailsapp
 ```
-### 起動を確認
+#### 起動を確認
 ```bash
 $ docker-machine ls
 ```
-### 接続
+#### 接続
 ```bash
 $ docker-machine env myrailsapp
 ```
 `# Run this command to configure your shell:`と出力されるので従う
 
-    別のDocker machineを使う場合はその都度設定する必要あり
 
-## コンテナレジストリにログイン認証を通す
-e.g. [Dockerhub](https://hub.docker.com/)を使った例
-     アカウントを取得しておく
-```bash
-$ docker login
-```
-`Login Succeeded`
-
-これでSetup準備完了
+## Gemfile確認
+必要なものを記載します。（リポジトリ上のGemfileは適当なサンプル）
 
 
-### Docker Container Setup
+## Docker Container Setup
 docker-composeコマンドを使い、複数コンテナを起動する
 (設定は`docker-compose.yml`)
 ```
 $ docker-compose build
 Successfully built.
 
+$ docker-compose run --rm app rails new . --force -d mysql --skip-bundle --skip-turbolinks --skip-test
+
 $ docker-compose up -d
 ```
-Bundle installが走る
 
 コンテナの起動確認
 ```
 $ docker ps
 ```
 
-## Setting environment valuables
-コンテナ間の接続の設定
-```bash
-$ docker exec **(appコンテナ名) env
-```
-
-出力された値を`.env`に設定  
-e.g.
-```
-DB_HOST       = 172.17.**.**
-DB_PORT       = 3306
-DB_DATABASE   = MYSQL_DATABASE
-DB_USERNAME   = myrailsapp
-DB_PASSWORD   = secret
-```
-
-$DOCKER_HOSTの値を、ローカルの`/etc/hosts`に追記  
-```
-192.168.***.**  dev.myrailsapp.jp
-```
-
-`dev.myrailsapp.jp` ブラウザアクセスしてRailsの確認
 
 ## Gemfileに変更があった場合
 変更をローカルにマージ後

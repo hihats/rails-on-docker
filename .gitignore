@@ -13,24 +13,15 @@
 !/log/.keep
 !/tmp/.keep
 
-## Environment normalisation:
-/.bundle
-/vendor/bundle
+# Ignore uploaded files in development
+/storage/*
+!/storage/.keep
 
+/node_modules
+/yarn-error.log
 
-# if using bower-rails ignore default bower_components path bower.json files
-/vendor/assets/bower_components
-!/public/uploads/redeem_product/test_files
-!/public/GeoLiteCity.dat
-*.bowerrc
-bower.json
+/public/assets
+.byebug_history
 
-/config/database.local.yml
-/config/local_env.yml
-
-# Ignore application configuration
-/config/application.yml
-
-# Docker related
-#.dockerignore
-/containers/web/log/*
+# Ignore master key for decrypting credentials and more.
+/config/master.key

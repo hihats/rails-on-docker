@@ -1,28 +1,27 @@
 db:
-  image: mysql
+  image: mysql:5.7
   restart: always
   volumes:
-    - ./containers/db/my.cnf:/etc/mysql/conf.d/my.cnf
-    - ./containers/db/initial.sql:/docker-entrypoint-initdb.d/initial.sql
+    - ./containers/db/my.cnf:/etc/mysql/conf.d/my.cnf:ro
+    - ./containers/db/init/:/docker-entrypoint-initdb.d/
   environment:
     MYSQL_ROOT_PASSWORD: pass
+
   container_name: db
 app:
   build: .
   volumes:
-    - .:/var/www/html
+    - .:/var/src/app
   ports:
     - '80:3000'
   environment:
     RAILS_ENV: development
-    MYSQL_DATABASE: mydb
-    DATABASE_USER: dev_user
-    DATABASE_PASSWORD: secret
+    MYSQL_DATABASE: dev
   links:
     - db
-    - redis
-  working_dir: /var/www/html
-  command: bundle exec rails s -b '0.0.0.0'
+    - node
+  working_dir: /var/src/app
+  command: /bin/sh -c "rm -f /var/src/app/tmp/pids/server.pid;bundle exec rails s -b 0.0.0.0"
   cap_add:
     - ALL  # Add all privilege
   container_name: app
@@ -33,7 +32,13 @@ app:
     max-size: "100k"
   dns:
     - 8.8.8.8
-redis:
-  image: redis
-  restart: always
-  container_name: redis
+node:
+  build: frontend
+  working_dir: /var/src/app/frontend
+  volumes:
+    - ./frontend:/var/src/app/frontend:delegated
+    - /var/src/app/frontend/node_modules
+  ports:
+    - 9090:8080
+  command: ./node_modules/.bin/webpack-dev-server --host 0.0.0.0 --inline --progress --config build/webpack.dev.conf.js
+  container_name: node
